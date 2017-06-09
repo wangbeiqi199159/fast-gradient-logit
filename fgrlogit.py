@@ -5,6 +5,10 @@ import scipy.linalg
 
 
 class FastGradRidgeLogit(object):
+    """Fast Gradient Descent Ridge Logistic Regression
+        
+        Generate step size by backtracking rule.
+    """
 
     opt_betas = None
     beta_vals = None
@@ -28,7 +32,7 @@ class FastGradRidgeLogit(object):
             y (ndarray): Response variables. (m x 1)
 
         Returns:
-            ndarray: Objective value of l2 logistic regression. (1 x n)
+            float: Objective value of l2 logistic regression.
         """
         obj = 1/len(y) * np.sum(np.log(1 + np.exp(-y*x.dot(beta)))) + lambduh * np.linalg.norm(beta)**2
 
@@ -36,6 +40,20 @@ class FastGradRidgeLogit(object):
 
 
     def fit(self,lambduh, x, y, maxiter = 300):
+        """fit(float, ndarray, ndarray, int)
+
+        'Perform fast gradient descent l2 logistic regression'
+        
+        Args:
+            lambduh (float): Regularization parameter.
+            x (ndarray): Features to input. (m x n)
+            y (ndarray): Response variables. (m x 1)
+            maxiter (int): Maximum number of iterations to run the algorithm
+
+        Returns:
+            ndarray: Array contains beta values of each iteration. (n x maxiter)
+        """
+
         self.x_train = x
         self.y_train = y
         self.lambduh = lambduh
@@ -73,6 +91,12 @@ class FastGradRidgeLogit(object):
 
     
     def plot_objective(self):
+        """plot_objective()
+
+        'Plot objective value changes through all iterations'
+
+        """
+
         if self.beta_vals is None:
             print("You should fit the model first.")
         num_points = np.size(self.beta_vals, 0)
@@ -88,6 +112,12 @@ class FastGradRidgeLogit(object):
         plt.show()
 
     def plot_misclassification_error(self):
+         """plot_misclassification_error()
+
+        'Plot misclassification error value changes through all iterations'
+
+        """
+
         if self.beta_vals is None:
             print("You should fit the model first.")
         niter = np.size(self.beta_vals, 0)
@@ -104,8 +134,10 @@ class FastGradRidgeLogit(object):
 
 
     #################### help functions ###################################################    
+    
+
     def __computegrad(self,beta, lambduh, x, y):
-        """computegrad(ndarray, float, ndarray, ndarray)
+        """__computegrad(ndarray, float, ndarray, ndarray)
 
         'Compute gradient of l2 logistic regression'
 
@@ -124,7 +156,7 @@ class FastGradRidgeLogit(object):
         return grad
 
     def __bt_line_search(self,beta, lambduh, eta, x, y, alpha=0.5, betaparam=0.8,maxiter=100):
-        """objective(ndarray, float, ndarray, ndarray)
+        """__bt_line_search(ndarray, float, float, ndarray, ndarray)
 
         'Perform backtracking line search'
         
@@ -158,6 +190,19 @@ class FastGradRidgeLogit(object):
 
 
     def __compute_misclassification_error(self, beta_opt, x, y):
+        """__compute_misclassification_error(ndarray, ndarray, ndarray)
+
+        'Compute misclassification error'
+
+        Args:
+        beta (ndarray): Coefficient of l2 logistic regression (1 x n)
+        x (ndarray): Features to input. (m x n)
+        y (ndarray): Response variables. (m x 1)
+
+        Returns:
+        float: Misclassification error value of l2 logistic regression.
+        """
+
         y_pred = 1/(1+np.exp(-x.dot(beta_opt))) > 0.5
         y_pred = y_pred*2 - 1  # Convert to +/- 1
         return np.mean(y_pred != y)
