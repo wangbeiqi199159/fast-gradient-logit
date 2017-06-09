@@ -29,10 +29,10 @@ The MIT License is a permissive free software license originating at the Massach
 There are three demo files:
 
 `demo on simulated dataset.ipynb` allows a user to launch the method on a simple simulated dataset,
-visualize the training process, and print the performance
+visualize the training process, and print the performance. Data source and information is included in the demo file.
 
 `demo on real world dataset.ipynb` allows a user to launch the method on a real-world dataset of your
-choice, visualize the training process, and print the performance
+choice, visualize the training process, and print the performance. Data source and information is included in the demo file.
 
-`Experimental Comparison to Sklearn.ipynb` allows a user to compare result of this package with scikit-learn.
+`Experimental Comparison to Sklearn.ipynb` allows a user to compare result of this package with scikit-learn. Data source and information is included in the demo file.
 
